@@ -1,7 +1,7 @@
-package world.gregs.hestia.network.login.out
+package world.gregs.hestia.ls.network.login.out
 
-import world.gregs.hestia.network.packets.Packet
-import world.gregs.hestia.services.int
+import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.services.int
 
 class SendFriend(displayName: String, lastName: String, notify: Boolean, online: Boolean, lobby: Boolean, world: Int) : Packet.Builder(85, Packet.Type.VAR_SHORT) {
     init {

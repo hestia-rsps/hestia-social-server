@@ -1,14 +1,15 @@
-package world.gregs.hestia
+package world.gregs.hestia.ls
 
-import world.gregs.hestia.network.NetworkConstants
-import world.gregs.hestia.network.codec.Encoder
-import world.gregs.hestia.network.codec.Pipeline
-import world.gregs.hestia.network.codec.inbound.PacketInboundHandler
-import world.gregs.hestia.network.login.LobbyAttempt
-import world.gregs.hestia.network.login.LoginHandshake
-import world.gregs.hestia.network.packets.PacketLoader
-import world.gregs.hestia.network.server.Network
-import world.gregs.hestia.network.worlds.WorldsInboundHandler
+import world.gregs.hestia.core.Settings
+import world.gregs.hestia.core.network.NetworkConstants
+import world.gregs.hestia.core.network.codec.Encoder
+import world.gregs.hestia.core.network.codec.Pipeline
+import world.gregs.hestia.core.network.codec.inbound.PacketInboundHandler
+import world.gregs.hestia.core.network.login.LoginHandshake
+import world.gregs.hestia.core.network.server.Network
+import world.gregs.hestia.core.services.load.PacketLoader
+import world.gregs.hestia.ls.network.login.LobbyAttempt
+import world.gregs.hestia.ls.network.worlds.WorldsInboundHandler
 
 class LoginServer {
 
@@ -16,17 +17,17 @@ class LoginServer {
         val loader = PacketLoader(Settings.get("packetPath", ""))
 
         //List of game servers (worlds) packets
-        val worldPackets = loader.load("world.gregs.hestia.network.worlds.in")
+        val worldPackets = loader.load("world.gregs.hestia.ls.network.worlds.in")
         //Handles communication with servers (worlds)
         val worldHandler = WorldsInboundHandler(worldPackets)
 
         //List of lobby packets
-        val lobbyPackets = loader.load("world.gregs.hestia.network.lobby.in")
+        val lobbyPackets = loader.load("world.gregs.hestia.ls.network.lobby.in")
         //Handles communication with client lobby's
         val lobbyHandler = PacketInboundHandler(lobbyPackets)
 
         //List of login requests from client
-        val loginPackets = loader.load("world.gregs.hestia.network.login.in")
+        val loginPackets = loader.load("world.gregs.hestia.ls.network.login.in")
         //Handles login requests (lobby or direct)
         val loginHandler = LoginHandshake(loginPackets, LobbyAttempt(lobbyHandler))
 
