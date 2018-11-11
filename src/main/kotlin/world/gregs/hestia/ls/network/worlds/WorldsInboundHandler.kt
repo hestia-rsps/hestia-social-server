@@ -1,10 +1,10 @@
-package world.gregs.hestia.network.worlds
+package world.gregs.hestia.ls.network.worlds
 
-import world.gregs.hestia.WorldDetails
-import world.gregs.hestia.network.Session
-import world.gregs.hestia.network.codec.inbound.PacketInboundHandler
-import world.gregs.hestia.network.packets.Packet
-import world.gregs.hestia.network.packets.PacketMap
+import world.gregs.hestia.core.WorldDetails
+import world.gregs.hestia.core.network.Session
+import world.gregs.hestia.core.network.codec.inbound.PacketInboundHandler
+import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.services.load.PacketMap
 
 class WorldsInboundHandler(packets: PacketMap) : PacketInboundHandler(packets) {
 

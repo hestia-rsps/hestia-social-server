@@ -1,14 +1,15 @@
-package world.gregs.hestia
+package world.gregs.hestia.ls
 
-import world.gregs.hestia.network.NetworkConstants
-import world.gregs.hestia.network.codec.Encoder
-import world.gregs.hestia.network.codec.Pipeline
-import world.gregs.hestia.network.codec.inbound.PacketInboundHandler
-import world.gregs.hestia.network.login.LobbyAttempt
-import world.gregs.hestia.network.login.LoginHandshake
-import world.gregs.hestia.network.packets.PacketLoader
-import world.gregs.hestia.network.server.Network
-import world.gregs.hestia.network.worlds.WorldsInboundHandler
+import world.gregs.hestia.core.Settings
+import world.gregs.hestia.core.network.NetworkConstants
+import world.gregs.hestia.core.network.codec.Encoder
+import world.gregs.hestia.core.network.codec.Pipeline
+import world.gregs.hestia.core.network.codec.inbound.PacketInboundHandler
+import world.gregs.hestia.core.network.login.LoginHandshake
+import world.gregs.hestia.core.network.server.Network
+import world.gregs.hestia.core.services.load.PacketLoader
+import world.gregs.hestia.ls.network.login.LobbyAttempt
+import world.gregs.hestia.ls.network.worlds.WorldsInboundHandler
 
 class LoginServer {
 
