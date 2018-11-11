@@ -17,17 +17,17 @@ class LoginServer {
         val loader = PacketLoader(Settings.get("packetPath", ""))
 
         //List of game servers (worlds) packets
-        val worldPackets = loader.load("world.gregs.hestia.network.worlds.in")
+        val worldPackets = loader.load("world.gregs.hestia.ls.network.worlds.in")
         //Handles communication with servers (worlds)
         val worldHandler = WorldsInboundHandler(worldPackets)
 
         //List of lobby packets
-        val lobbyPackets = loader.load("world.gregs.hestia.network.lobby.in")
+        val lobbyPackets = loader.load("world.gregs.hestia.ls.network.lobby.in")
         //Handles communication with client lobby's
         val lobbyHandler = PacketInboundHandler(lobbyPackets)
 
         //List of login requests from client
-        val loginPackets = loader.load("world.gregs.hestia.network.login.in")
+        val loginPackets = loader.load("world.gregs.hestia.ls.network.login.in")
         //Handles login requests (lobby or direct)
         val loginHandler = LoginHandshake(loginPackets, LobbyAttempt(lobbyHandler))
 

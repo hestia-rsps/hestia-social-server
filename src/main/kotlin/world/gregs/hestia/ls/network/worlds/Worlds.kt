@@ -1,7 +1,8 @@
-package world.gregs.hestia.ls.network.worlds
+package world.gregs.hestia.network.worlds
 
 import org.slf4j.LoggerFactory
 import world.gregs.hestia.core.WorldDetails
+import world.gregs.hestia.core.network.packets.InboundPacket
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.services.load.PacketMap
 import world.gregs.hestia.ls.network.worlds.out.WorldListPacket
@@ -14,7 +15,7 @@ object Worlds {
      */
     private val worlds = WorldList()
     private lateinit var packet: Packet
-    lateinit var packets: PacketMap
+    lateinit var packets: PacketMap<InboundPacket>
     private val logger = LoggerFactory.getLogger(Worlds::class.java)
 
     init {

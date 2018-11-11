@@ -1,12 +1,13 @@
-package world.gregs.hestia.ls.network.worlds
+package world.gregs.hestia.network.worlds
 
 import world.gregs.hestia.core.WorldDetails
 import world.gregs.hestia.core.network.Session
 import world.gregs.hestia.core.network.codec.inbound.PacketInboundHandler
+import world.gregs.hestia.core.network.packets.InboundPacket
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.services.load.PacketMap
 
-class WorldsInboundHandler(packets: PacketMap) : PacketInboundHandler(packets) {
+class WorldsInboundHandler(packets: PacketMap<InboundPacket>) : PacketInboundHandler<InboundPacket>(packets) {
 
     override fun disconnect(session: Session) {
         Worlds.remove(session.id)
