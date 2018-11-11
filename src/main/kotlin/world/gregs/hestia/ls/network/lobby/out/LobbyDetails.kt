@@ -1,6 +1,6 @@
-package world.gregs.hestia.network.lobby.out
+package world.gregs.hestia.ls.network.lobby.out
 
-import world.gregs.hestia.network.packets.Packet
+import world.gregs.hestia.core.network.packets.Packet
 import java.util.*
 
 class LobbyDetails(username: String, member: Boolean) : Packet.Builder(2, Packet.Type.VAR_BYTE) {

@@ -1,13 +1,13 @@
-package world.gregs.hestia.network.login.`in`
+package world.gregs.hestia.ls.network.login.`in`
 
-import world.gregs.hestia.network.Session
-import world.gregs.hestia.network.lobby.out.LobbyDetails
-import world.gregs.hestia.network.login.out.SendFriend
-import world.gregs.hestia.network.login.out.UnlockFriendList
-import world.gregs.hestia.network.packets.InboundPacket
-import world.gregs.hestia.network.packets.Packet
-import world.gregs.hestia.network.packets.PacketOpcode
-import world.gregs.hestia.network.packets.PacketSize
+import world.gregs.hestia.core.network.Session
+import world.gregs.hestia.core.network.packets.InboundPacket
+import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.network.packets.PacketOpcode
+import world.gregs.hestia.core.network.packets.PacketSize
+import world.gregs.hestia.ls.network.lobby.out.LobbyDetails
+import world.gregs.hestia.ls.network.login.out.SendFriend
+import world.gregs.hestia.ls.network.login.out.UnlockFriendList
 
 @PacketSize(-2)
 @PacketOpcode(19)
