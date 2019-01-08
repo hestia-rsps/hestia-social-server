@@ -1,8 +1,8 @@
-package world.gregs.hestia.network.worlds.out
+package world.gregs.hestia.ls.network.worlds.out
 
-import world.gregs.hestia.network.packets.Packet
-import world.gregs.hestia.network.worlds.WorldList
-import world.gregs.hestia.services.int
+import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.services.int
+import world.gregs.hestia.ls.network.worlds.WorldList
 
 class WorldListPacket(worlds: WorldList, worldConfiguration: Boolean = true, worldStatus: Boolean = true) : Packet.Builder(88, Packet.Type.VAR_SHORT) {
 

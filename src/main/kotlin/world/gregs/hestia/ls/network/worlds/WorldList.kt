@@ -1,6 +1,6 @@
-package world.gregs.hestia.network.worlds
+package world.gregs.hestia.ls.network.worlds
 
-import world.gregs.hestia.WorldDetails
+import world.gregs.hestia.core.WorldDetails
 
 class WorldList {
     private val worlds = ArrayList<WorldDetails>()
