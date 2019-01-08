@@ -1,4 +1,4 @@
-package world.gregs.hestia.ls.network.login.out
+package world.gregs.hestia.social.network.social.out
 
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.services.int

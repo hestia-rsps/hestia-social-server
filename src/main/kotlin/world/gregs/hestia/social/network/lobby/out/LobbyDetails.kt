@@ -1,4 +1,4 @@
-package world.gregs.hestia.ls.network.lobby.out
+package world.gregs.hestia.social.network.lobby.out
 
 import world.gregs.hestia.core.network.packets.Packet
 import java.util.*

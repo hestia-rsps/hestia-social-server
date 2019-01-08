@@ -1,19 +1,19 @@
-package world.gregs.hestia.ls.network.lobby.`in`
+package world.gregs.hestia.social.network.lobby.`in`
 
 import world.gregs.hestia.core.network.Session
 import world.gregs.hestia.core.network.packets.InboundPacket
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.network.packets.PacketOpcode
 import world.gregs.hestia.core.network.packets.PacketSize
-import world.gregs.hestia.ls.network.worlds.Worlds
+import world.gregs.hestia.social.network.lobby.out.LobbyOutboundPing
 
-@PacketSize(4)
-@PacketOpcode(34)
-class LobbyWorldListRefresh : InboundPacket {
+@PacketSize(0)
+@PacketOpcode(16)
+class LobbyInboundPing : InboundPacket {
 
     override fun read(session: Session, packet: Packet, length: Int): Boolean {
-        val response = packet.readInt()
-        session.write(Worlds.getWorldListPacket())
+        val latency = packet.readShort()
+        session.write(LobbyOutboundPing())
         return true
     }
 

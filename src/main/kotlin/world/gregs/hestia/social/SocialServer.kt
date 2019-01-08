@@ -1,4 +1,4 @@
-package world.gregs.hestia.ls
+package world.gregs.hestia.social
 
 import world.gregs.hestia.core.Settings
 import world.gregs.hestia.core.network.NetworkConstants
@@ -8,26 +8,26 @@ import world.gregs.hestia.core.network.codec.inbound.PacketInboundHandler
 import world.gregs.hestia.core.network.login.LoginHandshake
 import world.gregs.hestia.core.network.server.Network
 import world.gregs.hestia.core.services.load.PacketLoader
-import world.gregs.hestia.ls.network.login.LobbyAttempt
-import world.gregs.hestia.ls.network.worlds.WorldsInboundHandler
+import world.gregs.hestia.social.network.social.LobbyAttempt
+import world.gregs.hestia.social.network.worlds.WorldsInboundHandler
 
-class LoginServer {
+class SocialServer {
 
     fun start() {
         val loader = PacketLoader(Settings.get("packetPath", ""))
 
         //List of game servers (worlds) packets
-        val worldPackets = loader.load("world.gregs.hestia.ls.network.worlds.in")
+        val worldPackets = loader.load("world.gregs.hestia.social.network.worlds.in")
         //Handles communication with servers (worlds)
         val worldHandler = WorldsInboundHandler(worldPackets)
 
         //List of lobby packets
-        val lobbyPackets = loader.load("world.gregs.hestia.ls.network.lobby.in")
+        val lobbyPackets = loader.load("world.gregs.hestia.social.network.lobby.in")
         //Handles communication with client lobby's
         val lobbyHandler = PacketInboundHandler(lobbyPackets)
 
         //List of login requests from client
-        val loginPackets = loader.load("world.gregs.hestia.ls.network.login.in")
+        val loginPackets = loader.load("world.gregs.hestia.social.network.social.in")
         //Handles login requests (lobby or direct)
         val loginHandler = LoginHandshake(loginPackets, LobbyAttempt(lobbyHandler))
 
@@ -45,7 +45,7 @@ class LoginServer {
         @JvmStatic
         fun main(args: Array<String>) {
             Settings.load()
-            LoginServer().start()
+            SocialServer().start()
         }
     }
 }

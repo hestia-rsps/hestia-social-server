@@ -1,11 +1,11 @@
-package world.gregs.hestia.ls.network.worlds
+package world.gregs.hestia.social.network.worlds
 
 import org.slf4j.LoggerFactory
 import world.gregs.hestia.core.WorldDetails
 import world.gregs.hestia.core.network.packets.InboundPacket
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.services.load.PacketMap
-import world.gregs.hestia.ls.network.worlds.out.WorldListPacket
+import world.gregs.hestia.social.network.worlds.out.WorldListPacket
 
 object Worlds {
 

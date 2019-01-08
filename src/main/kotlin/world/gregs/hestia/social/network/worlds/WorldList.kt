@@ -1,4 +1,4 @@
-package world.gregs.hestia.ls.network.worlds
+package world.gregs.hestia.social.network.worlds
 
 import world.gregs.hestia.core.WorldDetails
 
