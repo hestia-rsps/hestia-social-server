@@ -5,10 +5,12 @@ ext {
 
     slf4j_version = "1.7.25"
     logback_version = "1.2.3"
+    
+    commons_io_version = "2.6"
 
     junit_version = "5.0.0"
     assertj_version = "3.11.1"
-    mockito_version = "1.10.19"
+    mockito_version = "2.23.4"
     mockito_kotlin_version = "2.0.0-RC3"
 
     mainDependencies = [
@@ -21,11 +23,15 @@ ext {
             slf4j  : "org.slf4j:slf4j-api:$slf4j_version",
             logback: "ch.qos.logback:logback-classic:$logback_version",
     ]
-
+    
+    utilityDependencies = [
+            commonsIo  : "commons-io:commons-io:$commons_io_version"
+    ]
+    
     testDependencies = [
             jUnit        : "org.junit.jupiter:junit-jupiter-api:$junit_version",
             assertJ      : "org.assertj:assertj-core:$assertj_version",
-            mockito      : "org.mockito:mockito-all:$mockito_version",
+            mockito      : "org.mockito:mockito-core:$mockito_version",
             mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version",
     ]
 }

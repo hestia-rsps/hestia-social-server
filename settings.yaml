@@ -1,1 +1,3 @@
+cachePath: "../hestia/data/cache/"
 packetPath: "./src/main/kotlin/"
+serverName: "Hestia"
