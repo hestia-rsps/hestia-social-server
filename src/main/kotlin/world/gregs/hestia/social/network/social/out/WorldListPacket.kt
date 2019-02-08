@@ -2,7 +2,7 @@ package world.gregs.hestia.social.network.social.out
 
 import world.gregs.hestia.core.network.packets.Packet
 import world.gregs.hestia.core.services.int
-import world.gregs.hestia.social.api.worlds.Worlds
+import world.gregs.hestia.social.api.Worlds
 
 class WorldListPacket(worlds: Worlds, worldConfiguration: Boolean = true, worldStatus: Boolean = true) : Packet.Builder(88, Packet.Type.VAR_SHORT) {
 

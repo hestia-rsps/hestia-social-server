@@ -5,7 +5,7 @@ import world.gregs.hestia.core.network.Session
 import world.gregs.hestia.core.network.packets.InboundPacket
 import world.gregs.hestia.core.services.load.PacketMap
 import world.gregs.hestia.core.world.WorldDetails
-import world.gregs.hestia.social.api.worlds.Worlds
+import world.gregs.hestia.social.api.Worlds
 import world.gregs.hestia.social.model.WorldList
 import world.gregs.hestia.social.network.social.out.WorldListPacket
 

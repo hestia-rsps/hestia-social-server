@@ -1,7 +1,7 @@
 package world.gregs.hestia.social.model
 
 import world.gregs.hestia.core.world.Details
-import world.gregs.hestia.social.api.worlds.Worlds
+import world.gregs.hestia.social.api.Worlds
 
 class WorldList : Worlds {
     override val worlds = ArrayList<Details>()
