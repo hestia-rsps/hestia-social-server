@@ -1,6 +1,6 @@
 package world.gregs.hestia.social.api
 
-import world.gregs.hestia.core.world.Details
+import world.gregs.hestia.core.network.protocol.Details
 
 interface Worlds {
     /**

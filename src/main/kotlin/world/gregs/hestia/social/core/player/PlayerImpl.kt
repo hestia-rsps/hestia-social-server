@@ -1,16 +1,16 @@
 package world.gregs.hestia.social.core.player
 
 import world.gregs.hestia.core.network.Session
-import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.network.codec.message.Message
+import world.gregs.hestia.core.network.protocol.encoders.messages.Chat
 import world.gregs.hestia.social.api.FriendsChat
 import world.gregs.hestia.social.api.Name
 import world.gregs.hestia.social.api.Player
 import world.gregs.hestia.social.api.Relations
 import world.gregs.hestia.social.core.Server
-import world.gregs.hestia.social.network.social.out.ChatMessage
-import world.gregs.hestia.social.network.social.out.SendFriend
-import world.gregs.hestia.social.network.social.out.SendIgnore
-import world.gregs.hestia.social.network.worlds.out.send
+import world.gregs.hestia.social.network.social.encoders.messages.FriendListUpdate
+import world.gregs.hestia.social.network.social.encoders.messages.IgnoreListUpdate
+import world.gregs.hestia.social.network.world.encoders.messages.ClientMessage
 
 open class PlayerImpl(override var session: Session?, override val names: Name, override val relations: Relations) : Player {
     override var worldId = 0
@@ -29,8 +29,8 @@ open class PlayerImpl(override var session: Session?, override val names: Name, 
     override val online: Boolean
         get() = worldId >= 0
 
-    override fun send(builder: Packet.Builder) {
-        session?.write(builder) ?: if (entityId != null) Server.sessions[worldId]?.send(entityId!!, builder)
+    override fun send(message: Message, priority: Boolean) {
+        session?.write(message, true) ?: if (entityId != null) Server.sessions[worldId]?.write(ClientMessage(entityId!!, message), true)
     }
 
     override fun statusOnline(friend: Name): Boolean {
@@ -39,19 +39,19 @@ open class PlayerImpl(override var session: Session?, override val names: Name, 
 
     override fun sendFriend(name: Name, friend: Player?) {
         send(if (friend == null || !friend.statusOnline(this)) {
-            SendFriend(name, false, false, 0, channel?.getRank(name)?.value ?: 0, false)//Display offline
+            FriendListUpdate(name, false, false, 0, channel?.getRank(name)?.value ?: 0, false)//Display offline
         } else {
             //Note: Having lobby as world as 1 will have it appear as green but stop the continuous login-in messages
-            SendFriend(name, false, friend.lobby, if (friend.lobby) 256 else friend.worldId, channel?.getRank(friend)?.value ?: 0, false)//Display online
+            FriendListUpdate(name, false, friend.lobby, if (friend.lobby) 256 else friend.worldId, channel?.getRank(friend)?.value ?: 0, false)//Display online
         })
     }
 
-    override fun sendIgnore(name: Name) {
-        send(SendIgnore(name.name, name.previousName, false, true))
+    override fun sendIgnore(name: Name, renamed: Boolean) {
+        send(IgnoreListUpdate(name.name, name.previousName, renamed, false))
     }
 
     override fun message(message: String, type: Int) {
-        send(ChatMessage(message, type, null))
+        send(Chat(type, 0, null, message))
     }
 
     override fun linkLobby(session: Session) {
@@ -68,7 +68,7 @@ open class PlayerImpl(override var session: Session?, override val names: Name, 
 
     override fun equals(other: Any?): Boolean {
         if (other is PlayerImpl) {
-            return names.name == other.names.name
+            return names == other.names || names.name == other.names.name
         }
         return super.equals(other)
     }

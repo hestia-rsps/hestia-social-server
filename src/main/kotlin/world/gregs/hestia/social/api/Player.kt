@@ -1,8 +1,8 @@
 package world.gregs.hestia.social.api
 
 import world.gregs.hestia.core.network.Session
-import world.gregs.hestia.core.network.packets.Packet
-import world.gregs.hestia.social.network.social.out.SendIgnoreList
+import world.gregs.hestia.core.network.codec.message.Message
+import world.gregs.hestia.social.network.social.encoders.messages.IgnoreListAll
 
 interface Player {
     /**
@@ -102,8 +102,9 @@ interface Player {
     /**
      * Sends ignore list change
      * @param name The username to add/update
+     * @param renamed Whether the update is to rename the ignored player
      */
-    fun sendIgnore(name: Name)
+    fun sendIgnore(name: Name, renamed: Boolean = false)
 
     /**
      * Sends the players friends list
@@ -118,7 +119,7 @@ interface Player {
      * Sends the players ignores list
      */
     fun sendIgnores() {
-        send(SendIgnoreList(relations.getIgnores()))
+        send(IgnoreListAll(relations.getIgnores()))
     }
 
     /**
@@ -139,9 +140,10 @@ interface Player {
 
     /**
      * Sends a packet to the players client (via game-server if logged-in)
-     * @param builder The packet to build and send
+     * @param message The message to send
+     * @param priority Whether to flush immediately or not
      */
-    fun send(builder: Packet.Builder)
+    fun send(message: Message, priority: Boolean = false)
 
     /**
      * Sends a chat message
