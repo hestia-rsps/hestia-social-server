@@ -6,7 +6,7 @@ import world.gregs.hestia.social.api.OnlineStatus.Companion.ON
 import world.gregs.hestia.social.api.OnlineStatus.Companion.PRIVATE
 import world.gregs.hestia.social.api.Player
 import world.gregs.hestia.social.api.Players
-import world.gregs.hestia.social.network.social.out.PrivateStatus
+import world.gregs.hestia.social.network.social.encoders.messages.PrivateStatus
 
 class SocialStatus(private val players: Players) : OnlineStatus {
 

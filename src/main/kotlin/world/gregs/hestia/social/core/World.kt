@@ -31,12 +31,6 @@ object World: Lobby {
 
         val greg = Names("Greg")
         names.addName(greg)
-        relations.create(greg).apply {
-            addFriend(Names("A Friend"))
-            addFriend(Names("Another friend"))
-            addIgnore(Names("An ignore"))
-            addIgnore(Names("Another ignore"))
-        }
 
         this.channels = channels
         channels.init()

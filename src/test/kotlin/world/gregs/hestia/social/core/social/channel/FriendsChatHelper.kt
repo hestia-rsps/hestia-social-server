@@ -3,16 +3,16 @@ package world.gregs.hestia.social.core.social.channel
 import com.nhaarman.mockitokotlin2.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import world.gregs.hestia.core.network.protocol.encoders.messages.FriendsChatUpdate
 import world.gregs.hestia.core.services.int
 import world.gregs.hestia.social.api.FriendsChat
 import world.gregs.hestia.social.api.Name
 import world.gregs.hestia.social.api.Player
 import world.gregs.hestia.social.api.Relations
 import world.gregs.hestia.social.core.social.FriendsChatChannel
-import world.gregs.hestia.social.network.social.out.FriendsChatAppend
-import world.gregs.hestia.social.network.social.out.FriendsChatDetails
-import world.gregs.hestia.social.network.social.out.FriendsChatMessage
-import world.gregs.hestia.social.network.social.out.QuickFriendsChatMessage
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatListAppend
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatMessage
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatQuickChat
 
 abstract class FriendsChatHelper {
 
@@ -85,19 +85,19 @@ abstract class FriendsChatHelper {
     }
 
     internal fun assertMessage(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatMessage>())
+        verify(player, times(times)).send(any<FriendsChatMessage>(), any())
     }
 
     internal fun assertQuickMessage(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<QuickFriendsChatMessage>())
+        verify(player, times(times)).send(any<FriendsChatQuickChat>(), any())
     }
 
     internal fun assertDetails(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatDetails>())
+        verify(player, times(times)).send(any<FriendsChatUpdate>(), any())
     }
 
     internal fun assertDetailChange(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatAppend>())
+        verify(player, times(times)).send(any<FriendsChatListAppend>(), any())
     }
 
     internal fun assertBanned(banned: Boolean, player: Player = this.player) {

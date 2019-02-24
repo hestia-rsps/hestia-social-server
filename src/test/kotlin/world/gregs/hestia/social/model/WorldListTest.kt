@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import world.gregs.hestia.core.world.Details
-import world.gregs.hestia.social.api.Worlds
+import world.gregs.hestia.core.world.Worlds
 
 internal class WorldListTest {
 

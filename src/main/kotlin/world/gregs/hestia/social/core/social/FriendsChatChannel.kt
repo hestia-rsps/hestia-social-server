@@ -1,19 +1,21 @@
 package world.gregs.hestia.social.core.social
 
 import org.slf4j.LoggerFactory
-import world.gregs.hestia.core.network.packets.Packet
+import world.gregs.hestia.core.cache.compress.Huffman
+import world.gregs.hestia.core.network.codec.packet.PacketBuilder
+import world.gregs.hestia.core.network.codec.packet.PacketWriter
+import world.gregs.hestia.core.network.protocol.encoders.messages.FriendsChatDisconnect
 import world.gregs.hestia.core.services.formatUsername
-import world.gregs.hestia.core.services.int
 import world.gregs.hestia.core.services.toRSLong
 import world.gregs.hestia.social.api.*
 import world.gregs.hestia.social.core.Duration.HOUR
 import world.gregs.hestia.social.core.World
 import world.gregs.hestia.social.core.social.FriendsChatChannels.Companion.CHANNEL_SETTINGS_DELAY
-import world.gregs.hestia.social.network.Huffman
-import world.gregs.hestia.social.network.social.out.FriendsChatAppend
-import world.gregs.hestia.social.network.social.out.FriendsChatDetails
-import world.gregs.hestia.social.network.social.out.FriendsChatMessage
-import world.gregs.hestia.social.network.social.out.QuickFriendsChatMessage
+import world.gregs.hestia.social.network.social.encoders.ChatPrivateFromEncoder
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatListAppend
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatMessage
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatQuickChat
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatUpdate
 import java.util.*
 
 class FriendsChatChannel(private val players: Players, override val relations: Relations) : FriendsChat {
@@ -81,7 +83,7 @@ class FriendsChatChannel(private val players: Players, override val relations: R
     }
 
     override fun display(player: Player) {
-        player.send(FriendsChatDetails(this))
+        player.send(FriendsChatUpdate(this))
         //Notify
         player.message("Now talking in friends chat channel $channelName", 11)
         player.message("To talk, start each line of chat with the / symbol.", 11)
@@ -124,20 +126,20 @@ class FriendsChatChannel(private val players: Players, override val relations: R
 
         //Send message to all members (who aren't ignoring this player)
         members.filterNot { it.ignores(player) }.forEach {
-            it.send(QuickFriendsChatMessage(array))
+            it.send(FriendsChatQuickChat(array))
         }
     }
 
     /**
      * Builds the message packet header
      * @param player The player sending the message
-     * @return Half built packet
+     * @return Half built packet builder
      */
-    private fun buildPacket(player: Player): Packet.Builder {
-        val builder = Packet.Builder()
-        writeUsername(builder, player.names.name)
+    private fun buildPacket(player: Player): PacketBuilder {
+        val builder = PacketWriter()
+        ChatPrivateFromEncoder.writeUsername(builder, player.names.name)
         builder.writeLong((channelName ?: "").toRSLong())
-        writeRand(builder)
+        ChatPrivateFromEncoder.writeRand(builder)
         builder.writeByte(player.rights)
         return builder
     }
@@ -205,7 +207,7 @@ class FriendsChatChannel(private val players: Players, override val relations: R
             if(!isOwner(player) || player.admin) {
                 player.sendFriends(players)
             }
-            player.send(FriendsChatDetails())//Exit
+            player.send(FriendsChatDisconnect())//Exit
             //Notify
             player.message("You have ${if(kick) "been kicked from" else "left" } the channel.", 11)
             //Refresh
@@ -276,7 +278,7 @@ class FriendsChatChannel(private val players: Players, override val relations: R
 
     override fun updateMember(member: Player, rank: FriendsChat.Ranks) {
         members.forEach {
-            it.send(FriendsChatAppend(member, rank))
+            it.send(FriendsChatListAppend(member, rank))
         }
     }
 
@@ -424,7 +426,7 @@ class FriendsChatChannel(private val players: Players, override val relations: R
         if (queue.any { it == null }) {
             //Update all details
             members.forEach {
-                it.send(FriendsChatDetails(this))
+                it.send(FriendsChatUpdate(this))
             }
         } else {
             //Update single changes
@@ -436,26 +438,6 @@ class FriendsChatChannel(private val players: Players, override val relations: R
     }
 
     companion object {
-        fun writeUsername(builder: Packet.Builder, username: String) {
-            val formatted = username.formatUsername()
-            val different = username != formatted
-
-            builder.writeByte(different.int)
-            builder.writeString(username)
-            if (different) {
-                builder.writeString(formatted)
-            }
-        }
-
-        fun writeRand(builder: Packet.Builder) {
-            //A very small chance (1 in a few billion) of duplicate and a message not being sent correctly
-            //If the value has been sent before then subsequent messages with the same value is ignored
-            //Not entirely sure of it's use
-            builder.writeShort(random.nextInt())
-            builder.writeMedium(random.nextInt())
-        }
-
-        private val random = Random()
         private const val MAX_MEMBERS = 100
         private const val BAN_TIME: Long = HOUR
         private val logger = LoggerFactory.getLogger(FriendsChatChannel::class.java)!!

@@ -10,8 +10,8 @@ interface OnlineStatus : Connection {
     fun setStatus(player: Player, status: Int)
 
     companion object {
-        internal const val ON = 0
-        internal const val FRIENDS = 1
-        internal const val PRIVATE = 2
+        const val ON = 0
+        const val FRIENDS = 1
+        const val PRIVATE = 2
     }
 }

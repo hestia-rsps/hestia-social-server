@@ -1,38 +1,33 @@
 package world.gregs.hestia.social
 
 import world.gregs.hestia.core.Settings
+import world.gregs.hestia.core.cache.CacheStore
+import world.gregs.hestia.core.cache.compress.Huffman
 import world.gregs.hestia.core.network.NetworkConstants
-import world.gregs.hestia.core.network.codec.Encoder
-import world.gregs.hestia.core.network.codec.Pipeline
-import world.gregs.hestia.core.network.codec.inbound.packet.PacketHandler
-import world.gregs.hestia.core.network.login.LoginHandshake
-import world.gregs.hestia.core.network.login.LoginHandshakeDecoder
+import world.gregs.hestia.core.network.Pipeline
+import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
+import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageDecoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageEncoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageHandler
+import world.gregs.hestia.core.network.codec.message.SimpleMessageHandshakeDecoder
 import world.gregs.hestia.core.network.server.Network
-import world.gregs.hestia.core.services.Cache
-import world.gregs.hestia.core.services.load.PacketLoader
 import world.gregs.hestia.social.core.World
 import world.gregs.hestia.social.core.player.PlayersImpl
 import world.gregs.hestia.social.core.social.*
-import world.gregs.hestia.social.network.Huffman
-import world.gregs.hestia.social.network.social.LobbyAttempt
-import world.gregs.hestia.social.network.social.SocialConnections
-import world.gregs.hestia.social.network.social.SocialPacketDecoder
-import world.gregs.hestia.social.network.social.`in`.LoginLobby
-import world.gregs.hestia.social.network.worlds.WorldPacketDecoder
-import world.gregs.hestia.social.network.worlds.WorldsConnections
+import world.gregs.hestia.social.network.social.SocialCodec
+import world.gregs.hestia.social.network.social.SocialHandshake
+import world.gregs.hestia.social.network.social.SocialMessages
+import world.gregs.hestia.social.network.world.WorldCodec
+import world.gregs.hestia.social.network.world.WorldConnections
+import world.gregs.hestia.social.network.world.WorldMessages
 
 class SocialServer {
 
+    private val socialCodec = SocialCodec()
+    private val socialMessages = SocialMessages()
+
     fun start() {
-        val loader = PacketLoader(Settings.get("packetPath", ""))
-
-        //Load packets
-        //Note: World packets makes use of social packets so must be loaded after
-        val socialPackets = loader.load("world.gregs.hestia.social.network.social.in")
-        val worldPackets = loader.load("world.gregs.hestia.social.network.worlds.in")
-        SocialPacketDecoder.packets = socialPackets
-        WorldPacketDecoder.packets = worldPackets
-
         startSocialServer()
         startWorldServer()
     }
@@ -42,15 +37,19 @@ class SocialServer {
      * Handles login requests, lobby, relations & messages
      */
     private fun startSocialServer() {
-        val socialPipeline = Pipeline()
+        val handshake = SocialHandshake(socialMessages)
+
+        val socialPipeline = Pipeline {
+            it.addLast(SimplePacketHandshakeDecoder(socialCodec, handshake))
+        }
 
         socialPipeline.apply {
-            //Decodes login packet
-            add(LoginHandshakeDecoder::class)
-            //After lobby login, pipeline get's switched with social decoders
-            add(LoginHandshake(LoginLobby(), LobbyAttempt(SocialPacketDecoder::class, PacketHandler(SocialPacketDecoder.packets), SocialConnections())))
-            //Packet encoder
-            add(Encoder())
+            //Decodes packets
+            add(SimpleMessageHandshakeDecoder(socialCodec, handshake))
+            //Handles handshake & messages
+            add(handshake, "handler")
+            //Encodes messages
+            add(SimpleMessageEncoder(socialCodec))
         }
 
         Network(name = "Login Server", channel = socialPipeline).start(NetworkConstants.BASE_PORT)
@@ -61,17 +60,20 @@ class SocialServer {
      * Handles re-routed client packets & game-server worlds
      */
     private fun startWorldServer() {
-        val worldPipeline = Pipeline()
+        val codec = WorldCodec(socialCodec)
+        val worldPipeline = Pipeline {
+            it.addLast(SimplePacketDecoder(codec))
+        }
 
         worldPipeline.apply {
-            //Decodes packets
-            add(WorldPacketDecoder::class)
-            //Removes world if game-server disconnected
-            add(WorldsConnections())
-            //Handles world packets
-            add(PacketHandler(WorldPacketDecoder.packets))
-            //Packet encoder
-            add(Encoder())
+            //Decode
+            add(SimpleMessageDecoder(codec))
+            //Handle
+            add(SimpleMessageHandler(WorldMessages(socialCodec, socialMessages)))
+            //Encode
+            add(SimpleMessageEncoder(codec))
+            //Disconnect
+            add(WorldConnections())
         }
 
         Network(name = "World Server", channel = worldPipeline).start(NetworkConstants.BASE_PORT - 1)
@@ -80,9 +82,9 @@ class SocialServer {
 
 fun main() {
     Settings.load()
-    Cache.init()
+    val cache = CacheStore()
     val players = PlayersImpl()
     World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
-    Huffman.init()
+    Huffman.init(cache)
     SocialServer().start()
 }
