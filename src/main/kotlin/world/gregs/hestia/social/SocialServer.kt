@@ -5,11 +5,11 @@ import world.gregs.hestia.core.cache.CacheStore
 import world.gregs.hestia.core.cache.compress.Huffman
 import world.gregs.hestia.core.network.NetworkConstants
 import world.gregs.hestia.core.network.Pipeline
+import world.gregs.hestia.core.network.codec.debug.DebugMessageEncoder
+import world.gregs.hestia.core.network.codec.debug.DebugMessageHandler
 import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
 import world.gregs.hestia.core.network.codec.message.SimpleMessageDecoder
-import world.gregs.hestia.core.network.codec.message.SimpleMessageEncoder
-import world.gregs.hestia.core.network.codec.message.SimpleMessageHandler
 import world.gregs.hestia.core.network.codec.message.SimpleMessageHandshakeDecoder
 import world.gregs.hestia.core.network.server.Network
 import world.gregs.hestia.social.core.World
@@ -25,7 +25,7 @@ import world.gregs.hestia.social.network.world.WorldMessages
 class SocialServer {
 
     private val socialCodec = SocialCodec()
-    private val socialMessages = SocialMessages()
+    private val socialMessages = SocialMessages(socialCodec)
 
     fun start() {
         startSocialServer()
@@ -40,7 +40,7 @@ class SocialServer {
         val handshake = SocialHandshake(socialMessages)
 
         val socialPipeline = Pipeline {
-            it.addLast(SimplePacketHandshakeDecoder(socialCodec, handshake))
+            it.addLast("packet", SimplePacketHandshakeDecoder(socialCodec, handshake))
         }
 
         socialPipeline.apply {
@@ -49,10 +49,10 @@ class SocialServer {
             //Handles handshake & messages
             add(handshake, "handler")
             //Encodes messages
-            add(SimpleMessageEncoder(socialCodec))
+            add(DebugMessageEncoder(socialCodec), "encoder")
         }
 
-        Network(name = "Login Server", channel = socialPipeline).start(NetworkConstants.BASE_PORT)
+        Network(name = "Login Server", channel = socialPipeline).start(50015)//NetworkConstants.BASE_PORT)
     }
 
     /**
@@ -69,9 +69,9 @@ class SocialServer {
             //Decode
             add(SimpleMessageDecoder(codec))
             //Handle
-            add(SimpleMessageHandler(WorldMessages(socialCodec, socialMessages)))
+            add(DebugMessageHandler(WorldMessages(socialCodec, socialMessages)))
             //Encode
-            add(SimpleMessageEncoder(codec))
+            add(DebugMessageEncoder(codec))
             //Disconnect
             add(WorldConnections())
         }

@@ -27,7 +27,7 @@ class FriendsChatChannel(private val players: Players, override val relations: R
     override var kickRank = FriendsChat.Ranks.OWNER
     override var lootRank = FriendsChat.Ranks.NO_ONE
     override var coinShare = false
-    override val members = ArrayList<Player>()
+    override val members = LinkedList<Player>()
     override val bans = HashMap<Name, Long>()
     private val queue = ArrayList<Name?>()
 

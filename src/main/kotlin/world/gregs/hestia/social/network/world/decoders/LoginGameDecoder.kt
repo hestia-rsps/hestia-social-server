@@ -4,10 +4,10 @@ import io.netty.channel.ChannelHandlerContext
 import world.gregs.hestia.core.network.client.Response
 import world.gregs.hestia.core.network.codec.message.MessageDecoder
 import world.gregs.hestia.core.network.codec.packet.Packet
-import world.gregs.hestia.core.network.protocol.LoginDecoder
 import world.gregs.hestia.core.network.protocol.WorldOpcodes.PLAYER_LOGIN_GAME
 import world.gregs.hestia.core.network.protocol.messages.LoginGame
 import world.gregs.hestia.core.network.protocol.messages.PlayerLoginResponse
+import world.gregs.hestia.social.network.LoginDecoder
 
 class LoginGameDecoder : MessageDecoder<LoginGame>(Packet.Type.VAR_SHORT, PLAYER_LOGIN_GAME) {
 
@@ -15,9 +15,7 @@ class LoginGameDecoder : MessageDecoder<LoginGame>(Packet.Type.VAR_SHORT, PLAYER
         val session = packet.readShort()
         val triple = LoginDecoder.decode(ctx, packet, true) ?: return null
         val password = triple.first
-        val serverSeed = triple.second
-        val clientSeed = triple.third
-
+        val isaacKeys = triple.second
         val username = packet.readString()
         packet.readUnsignedByte() // snlogin
         val displayMode = packet.readUnsignedByte()
@@ -67,7 +65,7 @@ class LoginGameDecoder : MessageDecoder<LoginGame>(Packet.Type.VAR_SHORT, PLAYER
         val hasJagtheora = packet.readUnsignedBoolean()
         val js = packet.readUnsignedBoolean()
         val hc = packet.readUnsignedBoolean()
-        return LoginGame(session, username, password, displayMode, screenWidth, screenHeight, antialiasLevel, settings, affiliateId, os, versionType, vendorType, javaRelease, javaVersion, javaUpdate, processorCount)
+        return LoginGame(session, username, password, isaacKeys, displayMode, screenWidth, screenHeight, antialiasLevel, settings, affiliateId, os, versionType, vendorType, javaRelease, javaVersion, javaUpdate, processorCount)
     }
 
 }

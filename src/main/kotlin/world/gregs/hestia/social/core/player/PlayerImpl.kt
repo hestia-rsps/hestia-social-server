@@ -29,7 +29,7 @@ open class PlayerImpl(override var session: Session?, override val names: Name, 
     override val online: Boolean
         get() = worldId >= 0
 
-    override fun send(message: Message, priority: Boolean) {
+    override fun send(message: Message) {
         session?.write(message, true) ?: if (entityId != null) Server.sessions[worldId]?.write(ClientMessage(entityId!!, message), true)
     }
 
