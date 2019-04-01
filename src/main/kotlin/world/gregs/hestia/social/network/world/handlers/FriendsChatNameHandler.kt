@@ -6,7 +6,6 @@ import world.gregs.hestia.core.network.getSession
 import world.gregs.hestia.core.network.protocol.encoders.messages.WidgetComponentText
 import world.gregs.hestia.core.network.protocol.messages.FriendsChatName
 import world.gregs.hestia.social.core.World
-import world.gregs.hestia.social.network.world.encoders.messages.sendClient
 
 class FriendsChatNameHandler : MessageHandler<FriendsChatName> {
 
@@ -21,7 +20,7 @@ class FriendsChatNameHandler : MessageHandler<FriendsChatName> {
             }
             else -> World.channels?.name(player, name)
         } ?: "Chat disabled"
-        ctx.sendClient(entity, WidgetComponentText(1108, 22, channelName))
+        player.send(WidgetComponentText(1108, 22, channelName))
     }
 
 }

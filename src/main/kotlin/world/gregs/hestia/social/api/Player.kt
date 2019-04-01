@@ -141,9 +141,8 @@ interface Player {
     /**
      * Sends a packet to the players client (via game-server if logged-in)
      * @param message The message to send
-     * @param priority Whether to flush immediately or not
      */
-    fun send(message: Message, priority: Boolean = false)
+    fun send(message: Message)
 
     /**
      * Sends a chat message

@@ -14,7 +14,7 @@ class LoginGameHandler : MessageHandler<LoginGame> {
     private val logger = LoggerFactory.getLogger(LoginGameHandler::class.java)!!
 
     override fun handle(ctx: ChannelHandlerContext, message: LoginGame) {
-        val (session, username, password, displayMode, screenWidth, screenHeight, antialiasLevel, settings, affiliateId, os, versionType, vendorType, javaRelease, javaVersion, javaUpdate, processorCount) = message
+        val (session, username, password, isaacKeys, displayMode, screenWidth, screenHeight, antialiasLevel, settings, affiliateId, os, versionType, vendorType, javaRelease, javaVersion, javaUpdate, processorCount) = message
 
         // invalid chars
         if (username.length <= 1 || username.length >= 15 || username.contains("?") || username.contains(":")
@@ -40,8 +40,7 @@ class LoginGameHandler : MessageHandler<LoginGame> {
             ctx.respond(session, Response.COULD_NOT_COMPLETE_LOGIN)
             return
         }
-
-        ctx.channel().write(PlayerLoginSuccess(session, name.name, displayMode, screenWidth, screenHeight))
+        ctx.channel().write(PlayerLoginSuccess(session, name.name, isaacKeys, displayMode, screenWidth, screenHeight))
     }
 
     private fun ChannelHandlerContext.respond(session: Int, response: Response) {

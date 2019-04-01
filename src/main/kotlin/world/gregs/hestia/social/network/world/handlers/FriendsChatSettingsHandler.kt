@@ -7,7 +7,6 @@ import world.gregs.hestia.core.network.protocol.encoders.messages.WidgetComponen
 import world.gregs.hestia.core.network.protocol.messages.FriendsChatSettings
 import world.gregs.hestia.social.api.FriendsChat
 import world.gregs.hestia.social.core.World
-import world.gregs.hestia.social.network.world.encoders.messages.sendClient
 
 class FriendsChatSettingsHandler : MessageHandler<FriendsChatSettings> {
 
@@ -26,12 +25,11 @@ class FriendsChatSettingsHandler : MessageHandler<FriendsChatSettings> {
         when(component) {
             0 -> {//Open interface
                 //TODO what will admin do about ranks as it's based on the local client friends list?
-                ctx.sendClient(entity, WidgetComponentText(widget, 22, channel.channelName
-                        ?: "Chat disabled"))
-                ctx.sendClient(entity, WidgetComponentText(widget, 23, channel.joinRank.string))
-                ctx.sendClient(entity, WidgetComponentText(widget, 24, channel.talkRank.string))
-                ctx.sendClient(entity, WidgetComponentText(widget, 25, channel.kickRank.string))
-                ctx.sendClient(entity, WidgetComponentText(widget, 26, channel.lootRank.string))
+                player.send(WidgetComponentText(widget, 22, channel.channelName ?: "Chat disabled"))
+                player.send(WidgetComponentText(widget, 23, channel.joinRank.string))
+                player.send(WidgetComponentText(widget, 24, channel.talkRank.string))
+                player.send(WidgetComponentText(widget, 25, channel.kickRank.string))
+                player.send(WidgetComponentText(widget, 26, channel.lootRank.string))
                 //TODO send coinShare
             }
             33 -> {//Toggle coin share
@@ -49,7 +47,7 @@ class FriendsChatSettingsHandler : MessageHandler<FriendsChatSettings> {
                 }
 
                 if(change != null) {
-                    ctx.sendClient(entity, WidgetComponentText(widget, component, change.string))
+                    player.send(WidgetComponentText(widget, component, change.string))
                 }
             }
         }
