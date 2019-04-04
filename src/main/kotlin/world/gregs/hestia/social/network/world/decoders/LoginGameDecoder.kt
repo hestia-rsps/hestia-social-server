@@ -13,9 +13,13 @@ class LoginGameDecoder : MessageDecoder<LoginGame>(Packet.Type.VAR_SHORT, PLAYER
 
     override fun decode(ctx: ChannelHandlerContext, packet: Packet): LoginGame? {
         val session = packet.readShort()
-        val triple = LoginDecoder.decode(ctx, packet, true) ?: return null
-        val password = triple.first
-        val isaacKeys = triple.second
+        val triple = LoginDecoder.decode(packet, true)
+        if(triple.first != Response.NORMAL) {
+            ctx.channel().writeAndFlush(PlayerLoginResponse(session, triple.first))
+            return null
+        }
+        val password = triple.second!!
+        val isaacKeys = triple.third!!
         val username = packet.readString()
         packet.readUnsignedByte() // snlogin
         val displayMode = packet.readUnsignedByte()
@@ -27,8 +31,7 @@ class LoginGameDecoder : MessageDecoder<LoginGame>(Packet.Type.VAR_SHORT, PLAYER
         val affiliateId = packet.readInt()
         packet.skip(packet.readUnsignedByte()) // useless settings
         if (packet.readUnsignedByte() != 5) {
-//            ctx.clientRespond(Response.BAD_SESSION_ID)
-            ctx.writeAndFlush(PlayerLoginResponse(session, Response.BAD_SESSION_ID))
+            ctx.channel().writeAndFlush(PlayerLoginResponse(session, Response.BAD_SESSION_ID))
             return null
         }
         val os = packet.readUnsignedByte()

@@ -16,6 +16,12 @@ class LoginGameHandler : MessageHandler<LoginGame> {
     override fun handle(ctx: ChannelHandlerContext, message: LoginGame) {
         val (session, username, password, isaacKeys, displayMode, screenWidth, screenHeight, antialiasLevel, settings, affiliateId, os, versionType, vendorType, javaRelease, javaVersion, javaUpdate, processorCount) = message
 
+        if(!ctx.channel().isOpen) {
+            logger.warn("Channel closed $username ${ctx.channel()}")
+            ctx.respond(session, Response.COULD_NOT_COMPLETE_LOGIN)
+            return
+        }
+
         // invalid chars
         if (username.length <= 1 || username.length >= 15 || username.contains("?") || username.contains(":")
                 || username.endsWith("<") || username.contains("\\") || username.contains("*") || username.startsWith("_")

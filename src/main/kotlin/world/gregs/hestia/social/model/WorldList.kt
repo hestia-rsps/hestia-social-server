@@ -16,6 +16,11 @@ class WorldList : Worlds {
         worlds.removeIf { it.id == id }
     }
 
+    override fun set(id: Int, info: Details) {
+        info.id = id
+        worlds.add(info)
+    }
+
     private fun getId(): Int {
         val ids = worlds.map { it.id }
         for(i in 1 until Int.MAX_VALUE) {
@@ -24,10 +29,5 @@ class WorldList : Worlds {
             }
         }
         return -1
-    }
-
-    override fun set(id: Int, info: Details) {
-        info.id = id
-        worlds.add(info)
     }
 }

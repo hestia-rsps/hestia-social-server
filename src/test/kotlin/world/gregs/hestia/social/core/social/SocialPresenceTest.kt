@@ -74,11 +74,11 @@ internal class SocialPresenceTest {
     }
 
     private fun assertFriendUnlock(times: Int) {
-        verify(player, times(times)).send(any<FriendListUnlock>(), any())
+        verify(player, times(times)).send(any<FriendListUnlock>())
     }
 
     private fun assertIgnoreUnlock(times: Int) {
-        verify(player, times(times)).send(any<IgnoreListUnlock>(), any())
+        verify(player, times(times)).send(any<IgnoreListUnlock>())
     }
 
     private fun assertFriend(times: Int) {

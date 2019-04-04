@@ -6,10 +6,10 @@ import world.gregs.hestia.core.cache.compress.Huffman
 import world.gregs.hestia.core.network.NetworkConstants
 import world.gregs.hestia.core.network.Pipeline
 import world.gregs.hestia.core.network.codec.debug.DebugMessageEncoder
-import world.gregs.hestia.core.network.codec.debug.DebugMessageHandler
 import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
 import world.gregs.hestia.core.network.codec.message.SimpleMessageDecoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageHandler
 import world.gregs.hestia.core.network.codec.message.SimpleMessageHandshakeDecoder
 import world.gregs.hestia.core.network.server.Network
 import world.gregs.hestia.social.core.World
@@ -22,6 +22,10 @@ import world.gregs.hestia.social.network.world.WorldCodec
 import world.gregs.hestia.social.network.world.WorldConnections
 import world.gregs.hestia.social.network.world.WorldMessages
 
+/**
+ * Structured using traditional hierarchical "god" player class, unlike the game-server
+ * @author Greg Hibberd
+ */
 class SocialServer {
 
     private val socialCodec = SocialCodec()
@@ -69,7 +73,7 @@ class SocialServer {
             //Decode
             add(SimpleMessageDecoder(codec))
             //Handle
-            add(DebugMessageHandler(WorldMessages(socialCodec, socialMessages)))
+            add(SimpleMessageHandler(WorldMessages(socialCodec, socialMessages)))
             //Encode
             add(DebugMessageEncoder(codec))
             //Disconnect

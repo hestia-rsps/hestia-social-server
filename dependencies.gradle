@@ -7,11 +7,12 @@ ext {
     logback_version = "1.2.3"
     
     commons_io_version = "2.6"
+    guava_version = "27.1-jre"
 
     junit_version = "5.0.0"
     assertj_version = "3.11.1"
-    mockito_version = "2.23.4"
-    mockito_kotlin_version = "2.0.0-RC3"
+    mockito_version = "2.25.1"
+    mockito_kotlin_version = "2.1.0"
 
     mainDependencies = [
             kotlinJdk: "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
@@ -25,7 +26,8 @@ ext {
     ]
     
     utilityDependencies = [
-            commonsIo  : "commons-io:commons-io:$commons_io_version"
+            commonsIo  : "commons-io:commons-io:$commons_io_version",
+            guava    : "com.google.guava:guava:$guava_version",
     ]
     
     testDependencies = [

@@ -5,10 +5,16 @@ import world.gregs.hestia.social.api.Name
 import world.gregs.hestia.social.api.Player
 import world.gregs.hestia.social.api.Players
 import world.gregs.hestia.social.core.World
+import java.util.concurrent.CopyOnWriteArrayList
 
 open class PlayersImpl : Players {
 
-    override val all = ArrayList<Player>()
+    /*
+        TODO
+            When a world disconnects delay ~5 seconds before disconnecting players (presuming they haven't already reconnected)
+            Concurrency with players list - iterator for all loops, immutable copies to loop, alternatives?
+     */
+    override val all = CopyOnWriteArrayList<Player>()
 
     override fun add(player: Player): Boolean {
         val success = !all.contains(player) && all.add(player)

@@ -3,7 +3,6 @@ package world.gregs.hestia.social.core.social.channel
 import com.nhaarman.mockitokotlin2.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
-import world.gregs.hestia.core.network.protocol.encoders.messages.FriendsChatUpdate
 import world.gregs.hestia.core.services.int
 import world.gregs.hestia.social.api.FriendsChat
 import world.gregs.hestia.social.api.Name
@@ -13,6 +12,7 @@ import world.gregs.hestia.social.core.social.FriendsChatChannel
 import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatListAppend
 import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatMessage
 import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatQuickChat
+import world.gregs.hestia.social.network.social.encoders.messages.FriendsChatUpdate
 
 abstract class FriendsChatHelper {
 
@@ -85,19 +85,19 @@ abstract class FriendsChatHelper {
     }
 
     internal fun assertMessage(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatMessage>(), any())
+        verify(player, times(times)).send(any<FriendsChatMessage>())
     }
 
     internal fun assertQuickMessage(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatQuickChat>(), any())
+        verify(player, times(times)).send(any<FriendsChatQuickChat>())
     }
 
     internal fun assertDetails(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatUpdate>(), any())
+        verify(player, times(times)).send(any<FriendsChatUpdate>())
     }
 
     internal fun assertDetailChange(times: Int, player: Player = this.player) {
-        verify(player, times(times)).send(any<FriendsChatListAppend>(), any())
+        verify(player, times(times)).send(any<FriendsChatListAppend>())
     }
 
     internal fun assertBanned(banned: Boolean, player: Player = this.player) {

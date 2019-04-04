@@ -28,6 +28,7 @@ class SocialCodec : MessageHandshakeCodec() {
         bind(MessagePublicDecoder())
         bind(MessagePublicQuickChatDecoder())
         bind(ReportAbuseDecoder())
+        bind(HyperlinkDecoder())
 
         bind(ChatEncoder())
         bind(FriendsChatQuickChatEncoder())
