@@ -6,8 +6,8 @@ import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import world.gregs.hestia.core.world.Details
-import world.gregs.hestia.core.world.Worlds
+import world.gregs.hestia.core.network.protocol.Details
+import world.gregs.hestia.social.api.Worlds
 
 internal class WorldListTest {
 

@@ -3,14 +3,14 @@ package world.gregs.hestia.social
 import world.gregs.hestia.core.Settings
 import world.gregs.hestia.core.cache.CacheStore
 import world.gregs.hestia.core.cache.compress.Huffman
-import world.gregs.hestia.core.network.NetworkConstants
-import world.gregs.hestia.core.network.Pipeline
-import world.gregs.hestia.core.network.codec.debug.DebugMessageEncoder
-import world.gregs.hestia.core.network.codec.debug.DebugMessageHandler
+import world.gregs.hestia.core.network.codec.ChannelFilter
 import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
 import world.gregs.hestia.core.network.codec.message.SimpleMessageDecoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageEncoder
+import world.gregs.hestia.core.network.codec.message.SimpleMessageHandler
 import world.gregs.hestia.core.network.codec.message.SimpleMessageHandshakeDecoder
+import world.gregs.hestia.core.network.pipe.Pipeline
 import world.gregs.hestia.core.network.server.Network
 import world.gregs.hestia.social.core.World
 import world.gregs.hestia.social.core.player.PlayersImpl
@@ -22,6 +22,10 @@ import world.gregs.hestia.social.network.world.WorldCodec
 import world.gregs.hestia.social.network.world.WorldConnections
 import world.gregs.hestia.social.network.world.WorldMessages
 
+/**
+ * Structured using traditional hierarchical "god" player class, unlike the game-server
+ * @author Greg Hibberd
+ */
 class SocialServer {
 
     private val socialCodec = SocialCodec()
@@ -44,15 +48,17 @@ class SocialServer {
         }
 
         socialPipeline.apply {
+            //Limit external connections
+            add(ChannelFilter(Settings.getInt("connectionLimit")!!))
             //Decodes packets
             add(SimpleMessageHandshakeDecoder(socialCodec, handshake))
             //Handles handshake & messages
             add(handshake, "handler")
             //Encodes messages
-            add(DebugMessageEncoder(socialCodec), "encoder")
+            add(SimpleMessageEncoder(socialCodec), "encoder")
         }
 
-        Network(name = "Login Server", channel = socialPipeline).start(50015)//NetworkConstants.BASE_PORT)
+        Network(name = "Login Server", channel = socialPipeline).start(Settings.getInt("loginServerPort")!!)
     }
 
     /**
@@ -69,14 +75,14 @@ class SocialServer {
             //Decode
             add(SimpleMessageDecoder(codec))
             //Handle
-            add(DebugMessageHandler(WorldMessages(socialCodec, socialMessages)))
+            add(SimpleMessageHandler(WorldMessages(socialCodec, socialMessages)))
             //Encode
-            add(DebugMessageEncoder(codec))
+            add(SimpleMessageEncoder(codec))
             //Disconnect
             add(WorldConnections())
         }
 
-        Network(name = "World Server", channel = worldPipeline).start(NetworkConstants.BASE_PORT - 1)
+        Network(name = "World Server", channel = worldPipeline).start(Settings.getInt("worldServerPort")!!)
     }
 }
 

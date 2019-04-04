@@ -2,12 +2,12 @@ package world.gregs.hestia.social.network.world
 
 import io.netty.channel.ChannelHandler
 import world.gregs.hestia.core.network.Session
-import world.gregs.hestia.core.network.codec.ConnectionListener
+import world.gregs.hestia.core.network.codec.ConnectionSessionListener
 import world.gregs.hestia.social.core.Server
 import world.gregs.hestia.social.core.World
 
 @ChannelHandler.Sharable
-class WorldConnections : ConnectionListener() {
+class WorldConnections : ConnectionSessionListener() {
     override fun connect(session: Session) {
     }
 
