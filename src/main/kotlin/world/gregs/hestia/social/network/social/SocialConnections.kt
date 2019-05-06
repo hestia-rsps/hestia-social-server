@@ -12,7 +12,6 @@ class SocialConnections : ConnectionSessionListener() {
     }
 
     override fun disconnect(session: Session) {
-        println("Disconnect $session ${World.players.get(session)} ${World.players.get(session)?.session}")
         val player = World.players.get(session) ?: return
         if(player.session != null) {
             World.disconnect(player)

@@ -42,7 +42,6 @@ class LoginLobbyHandler(private val codec: SocialCodec) : MessageHandler<LoginLo
         while(queue.size > 0) {
             val (ctx, message) = queue.poll() ?: break
             if (!ctx.channel().isOpen) {//TODO connections time out without any ping, so when they reach here it's no longer open and so closes the connection
-                println("Channel ${ctx.channel().isOpen} ${ctx.channel().isActive} ${ctx.channel().isRegistered} ${ctx.channel().isWritable} ${ctx.isRemoved}")
                 logger.warn("Queued login channel unregistered ${ctx.channel()}")
                 ctx.close()
                 continue
