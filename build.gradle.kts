@@ -15,22 +15,22 @@ dependencies {
     implementation(fileTree("dir" to "libs", "include" to listOf("*.jar")))
 
     //Main
-    implementation("io.netty:netty-all:4.1.29.Final")
-    implementation("org.yaml:snakeyaml:1.23")
+    implementation("io.netty:netty-all:4.1.44.Final")
+    implementation("org.yaml:snakeyaml:1.25")
 
     //Logging
     implementation("commons-io:commons-io:2.6")
-    implementation("com.google.guava:guava:27.1-jre")
+    implementation("com.google.guava:guava:28.2-jre")
 
     //Utilities
-    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.slf4j:slf4j-api:1.7.30")
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     //Testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.0.0")
-    testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation("org.mockito:mockito-core:2.25.1")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+    testImplementation("org.assertj:assertj-core:3.14.0")
+    testImplementation("org.mockito:mockito-core:3.2.4")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
 
 tasks {
