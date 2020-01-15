@@ -3,8 +3,8 @@ plugins {
     idea
 }
 
-group = "world.gregs.hestia.social"
-version = "0.3.2"
+group = "world.gregs.hestia"
+version = "0.3.3"
 
 repositories {
     mavenCentral()
