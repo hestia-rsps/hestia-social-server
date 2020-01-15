@@ -47,7 +47,7 @@ class SocialCodec : MessageHandshakeCodec() {
         bind(IgnoreListAllEncoder())
         bind(IgnoreListUnlockEncoder())
         bind(IgnoreListUpdateEncoder())
-        bind(WidgetComponentTextEncoder())
+        bind(InterfaceComponentTextEncoder())
         bind(LobbyDetailsEncoder())
         bind(PingEncoder())
         bind(PrivateStatusEncoder())
