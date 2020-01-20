@@ -4,13 +4,13 @@ import world.gregs.hestia.core.Settings
 import world.gregs.hestia.core.cache.CacheStore
 import world.gregs.hestia.core.cache.compress.Huffman
 import world.gregs.hestia.core.network.NetworkConstants
-import world.gregs.hestia.core.network.Pipeline
 import world.gregs.hestia.core.network.codec.debug.DebugMessageEncoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
 import world.gregs.hestia.core.network.codec.message.SimpleMessageDecoder
 import world.gregs.hestia.core.network.codec.message.SimpleMessageHandler
 import world.gregs.hestia.core.network.codec.message.SimpleMessageHandshakeDecoder
+import world.gregs.hestia.core.network.pipe.Pipeline
 import world.gregs.hestia.core.network.server.Network
 import world.gregs.hestia.social.core.World
 import world.gregs.hestia.social.core.player.PlayersImpl
@@ -56,7 +56,7 @@ class SocialServer {
             add(DebugMessageEncoder(socialCodec), "encoder")
         }
 
-        Network(name = "Login Server", channel = socialPipeline).start(50015)//NetworkConstants.BASE_PORT)
+        Network(name = "Login Server", channel = socialPipeline).start(Settings.getInt("loginServerPort")!!)
     }
 
     /**
@@ -80,15 +80,18 @@ class SocialServer {
             add(WorldConnections())
         }
 
-        Network(name = "World Server", channel = worldPipeline).start(NetworkConstants.BASE_PORT - 1)
+        Network(name = "World Server", channel = worldPipeline).start(Settings.getInt("worldServerPort")!!)
     }
-}
 
-fun main() {
-    Settings.load()
-    val cache = CacheStore()
-    val players = PlayersImpl()
-    World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
-    Huffman.init(cache)
-    SocialServer().start()
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            Settings.load("./social-settings.yml")
+            val cache = CacheStore()
+            val players = PlayersImpl()
+            World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
+            Huffman.init(cache)
+            SocialServer().start()
+        }
+    }
 }

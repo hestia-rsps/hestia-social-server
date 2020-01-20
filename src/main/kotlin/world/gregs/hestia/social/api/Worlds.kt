@@ -26,5 +26,5 @@ interface Worlds {
      * @param id The id of the world
      * @param info The details of the world to add
      */
-    fun set(id: Int, info:  Details)
+    fun set(id: Int, info: Details)
 }
