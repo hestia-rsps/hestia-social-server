@@ -15,7 +15,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     //Main
-    implementation("world.gregs.hestia:hestia-server-core:0.4.6")
+    implementation("world.gregs.hestia:hestia-server-core:0.4.7")
     implementation("io.netty:netty-all:4.1.44.Final")
     implementation("org.yaml:snakeyaml:1.25")
 
