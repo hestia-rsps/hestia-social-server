@@ -82,13 +82,16 @@ class SocialServer {
 
         Network(name = "World Server", channel = worldPipeline).start(Settings.getInt("worldServerPort")!!)
     }
-}
 
-fun main() {
-    Settings.load("./social-settings.yml")
-    val cache = CacheStore()
-    val players = PlayersImpl()
-    World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
-    Huffman.init(cache)
-    SocialServer().start()
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            Settings.load("./social-settings.yml")
+            val cache = CacheStore()
+            val players = PlayersImpl()
+            World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
+            Huffman.init(cache)
+            SocialServer().start()
+        }
+    }
 }
