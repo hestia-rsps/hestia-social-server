@@ -1,9 +1,9 @@
 package world.gregs.hestia.social.core.social
 
 import org.slf4j.LoggerFactory
-import world.gregs.hestia.core.cache.compress.Huffman
-import world.gregs.hestia.core.network.codec.packet.PacketBuilder
-import world.gregs.hestia.core.network.codec.packet.PacketWriter
+import world.gregs.hestia.cache.compress.Huffman
+import world.gregs.hestia.core.network.packet.PacketBuilder
+import world.gregs.hestia.core.network.packet.PacketWriter
 import world.gregs.hestia.core.network.protocol.encoders.messages.FriendsChatDisconnect
 import world.gregs.hestia.core.services.formatUsername
 import world.gregs.hestia.core.services.toRSLong

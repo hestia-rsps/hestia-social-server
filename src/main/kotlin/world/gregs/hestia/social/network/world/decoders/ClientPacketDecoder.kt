@@ -2,8 +2,8 @@ package world.gregs.hestia.social.network.world.decoders
 
 import io.netty.channel.ChannelHandlerContext
 import world.gregs.hestia.core.network.codec.message.MessageDecoder
-import world.gregs.hestia.core.network.codec.packet.Packet
-import world.gregs.hestia.core.network.codec.packet.PacketReader
+import world.gregs.hestia.core.network.packet.Packet
+import world.gregs.hestia.core.network.packet.PacketReader
 import world.gregs.hestia.core.network.protocol.WorldOpcodes.CLIENT_PACKET
 import world.gregs.hestia.core.network.protocol.messages.ClientPacket
 

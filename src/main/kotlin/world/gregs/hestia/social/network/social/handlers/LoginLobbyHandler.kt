@@ -2,7 +2,7 @@ package world.gregs.hestia.social.network.social.handlers
 
 import io.netty.channel.ChannelHandlerContext
 import org.slf4j.LoggerFactory
-import world.gregs.hestia.core.cache.crypto.Isaac
+import world.gregs.hestia.cache.crypto.Isaac
 import world.gregs.hestia.core.network.codec.decode.SimpleIsaacPacketHandshakeDecoder
 import world.gregs.hestia.core.network.codec.message.MessageHandler
 import world.gregs.hestia.core.network.codec.message.SimpleIsaacMessageEncoder

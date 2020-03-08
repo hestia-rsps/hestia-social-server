@@ -2,7 +2,7 @@ package world.gregs.hestia.social.network.social.decoders
 
 import io.netty.channel.ChannelHandlerContext
 import world.gregs.hestia.core.network.codec.message.MessageDecoder
-import world.gregs.hestia.core.network.codec.packet.Packet
+import world.gregs.hestia.core.network.packet.Packet
 import world.gregs.hestia.core.network.protocol.ClientOpcodes.REMOVE_FRIEND
 import world.gregs.hestia.social.network.social.decoders.messages.FriendListRemove
 

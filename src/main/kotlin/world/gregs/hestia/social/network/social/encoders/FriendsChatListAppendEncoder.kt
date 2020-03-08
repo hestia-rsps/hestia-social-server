@@ -2,8 +2,8 @@ package world.gregs.hestia.social.network.social.encoders
 
 import world.gregs.hestia.core.Settings
 import world.gregs.hestia.core.network.codec.message.MessageEncoder
-import world.gregs.hestia.core.network.codec.packet.Packet
-import world.gregs.hestia.core.network.codec.packet.PacketBuilder
+import world.gregs.hestia.core.network.packet.Packet
+import world.gregs.hestia.core.network.packet.PacketBuilder
 import world.gregs.hestia.core.network.protocol.ClientOpcodes.FRIEND_LIST_APPEND
 import world.gregs.hestia.social.api.FriendsChat
 import world.gregs.hestia.social.api.Player

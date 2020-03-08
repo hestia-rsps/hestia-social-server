@@ -1,9 +1,8 @@
 package world.gregs.hestia.social
 
+import com.displee.cache.CacheLibrary
+import world.gregs.hestia.cache.compress.Huffman
 import world.gregs.hestia.core.Settings
-import world.gregs.hestia.core.cache.CacheStore
-import world.gregs.hestia.core.cache.compress.Huffman
-import world.gregs.hestia.core.network.NetworkConstants
 import world.gregs.hestia.core.network.codec.debug.DebugMessageEncoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketDecoder
 import world.gregs.hestia.core.network.codec.decode.SimplePacketHandshakeDecoder
@@ -87,7 +86,7 @@ class SocialServer {
         @JvmStatic
         fun main(args: Array<String>) {
             Settings.load("./social-settings.yml")
-            val cache = CacheStore()
+            val cache = CacheLibrary(Settings.getString("cachePath")!!)
             val players = PlayersImpl()
             World.init(players, SocialTransmission(players), SocialPresence(players), SocialStatus(players), SocialAffiliations(players), FriendsChatChannels(players))
             Huffman.init(cache)

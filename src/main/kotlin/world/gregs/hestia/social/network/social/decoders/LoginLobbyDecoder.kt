@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext
 import world.gregs.hestia.core.network.client.Response
 import world.gregs.hestia.core.network.clientRespond
 import world.gregs.hestia.core.network.codec.message.MessageDecoder
-import world.gregs.hestia.core.network.codec.packet.Packet
+import world.gregs.hestia.core.network.packet.Packet
 import world.gregs.hestia.core.network.protocol.ClientOpcodes.LOBBY_LOGIN
 import world.gregs.hestia.social.network.LoginDecoder
 import world.gregs.hestia.social.network.social.decoders.messages.LoginLobby

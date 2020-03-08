@@ -2,7 +2,7 @@ package world.gregs.hestia.social.core
 
 import org.slf4j.LoggerFactory
 import world.gregs.hestia.core.network.Session
-import world.gregs.hestia.core.network.codec.packet.PacketWriter
+import world.gregs.hestia.core.network.packet.PacketWriter
 import world.gregs.hestia.core.network.protocol.Details
 import world.gregs.hestia.social.api.Worlds
 import world.gregs.hestia.social.model.WorldList
