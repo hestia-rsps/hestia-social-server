@@ -4,6 +4,6 @@ import world.gregs.hestia.core.network.codec.message.Message
 
 /**
  * Client has requested the lobby world list be refreshed
- * @param response The response value required for latency calculation
+ * @param crc World list version crc
  */
-data class LobbyWorldListRefresh(val response: Int) : Message
+data class LobbyWorldListRefresh(val crc: Int) : Message
