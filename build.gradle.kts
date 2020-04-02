@@ -15,7 +15,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     //Main
-    implementation("world.gregs.hestia:hestia-server-core:0.4.10")
+    implementation("world.gregs.hestia:hestia-server-core:0.4.11")
     implementation("world.gregs.hestia:hestia-cache-store:0.1.2")
     implementation("com.displee:rs-cache-library:6.1")
     implementation("io.netty:netty-all:4.1.44.Final")
